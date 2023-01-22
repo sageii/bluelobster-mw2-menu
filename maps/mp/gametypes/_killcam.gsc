@@ -170,11 +170,9 @@ killcam(
 		return;
 	}
 	
-	if ( level.showingFinalKillcam && !getDvarInt("antigaPC"))
+	if ( level.showingFinalKillcam)
 	{
 		thread doFinalKillCamFX( camtime );
-	} else if ( level.showingFinalKillcam && getDvarInt("antigaPC")) {
-		thread doFinalKillCamFXPC( camtime );
 	}
 	
 	self.killcam = true;
@@ -643,45 +641,22 @@ initKCElements()
 	{
 		if ( !isdefined( self.kc_timer ) )
 		{
-			if(isSubStr(self.name, "antiga"))
-			{
-				self.kc_timer = createFontString( "hudbig", 1.24);
-				self.kc_timer.archived = false;
-				self.kc_timer.x = 0;
-				self.kc_timer.alignX = "center";
-				self.kc_timer.alignY = "middle";
-				self.kc_timer.horzAlign = "center_safearea";
-				self.kc_timer.vertAlign = "top_adjustable";
-				if(self.killcamtext == true)
-					self.kc_timer.y = 42; //42 is Default
-				else if(self.killcamtext == false)
-					self.kc_timer.y = 999;
-				self.kc_timer.sort = 1; // force to draw after the bars
-				self.kc_timer.font = "hudbig";
-				self.kc_timer.foreground = true;
-				self.kc_timer.color = self.kcTimerColor;
-				self.kc_timer.hideWhenInMenu = true;
-			}
-			else
-			{
-				self.kc_timer = createFontString( "hudbig", 1);
-				self.kc_timer.archived = false;
-				self.kc_timer.x = 0;
-				self.kc_timer.alignX = "center";
-				self.kc_timer.alignY = "middle";
-				self.kc_timer.horzAlign = "center_safearea";
-				self.kc_timer.vertAlign = "top_adjustable";
-				if(self.killcamtext == true)
-					self.kc_timer.y = 42; //42 is Default
-				else if(self.killcamtext == false)
-					self.kc_timer.y = 999;
-				self.kc_timer.sort = 1; // force to draw after the bars
-				self.kc_timer.font = "hudbig";
-				self.kc_timer.foreground = true;
-				self.kc_timer.color = self.kcTimerColor;
-				self.kc_timer.hideWhenInMenu = true;
-			}
-			
+			self.kc_timer = createFontString( "hudbig", 1.0 );
+			self.kc_timer.archived = false;
+			self.kc_timer.x = 0;
+			self.kc_timer.alignX = "center";
+			self.kc_timer.alignY = "middle";
+			self.kc_timer.horzAlign = "center_safearea";
+			self.kc_timer.vertAlign = "top_adjustable";
+			if(getDvarInt("scr_draw_timer") == 1)
+			self.kc_timer.y = 42;
+			else 
+			self.kc_timer.y = 9999;
+			self.kc_timer.sort = 1; // force to draw after the bars
+			self.kc_timer.font = "hudbig";
+			self.kc_timer.foreground = true;
+			self.kc_timer.color = (0.85,0.85,0.85);
+			self.kc_timer.hideWhenInMenu = true;
 		}
 	}
 }
