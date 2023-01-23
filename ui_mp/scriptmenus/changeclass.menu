@@ -1848,13 +1848,13 @@
 			textalignx -41
 			textaligny -1
 			textscale 0.28
-			text "@PLATFORM_UI_SELECTBUTTON"
+			text "[{+gostand}]"
 			exp rect y ( getfocuseditemy( ) )
-			visible when ( localvarbool( "ui_menuAButton" ) && !localvarbool( "ui_centerPopup" ) )
+			visible when ( localvarbool( "ui_menuAButton" ) && !localvarbool( "ui_centerPopup" ) && dvarint( "gpad_in_use" ) )
 		}
 		itemDef
 		{
-			rect -64 -20 336 24 1 3
+			rect -90 -20 336 24 1 3
 			decoration
 			visible 1
 			forecolor 1 1 1 1
@@ -1862,7 +1862,7 @@
 			textalign 6
 			textalignx -30
 			textscale 0.375
-			text "@PLATFORM_BACK_CAPS"
+			text "BACK [{+stance}]"
 		}
 		itemDef
 		{
