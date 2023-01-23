@@ -1040,23 +1040,6 @@ delete_carepack()
         level.airDropCrates = getEntArray( "care_package", "targetname" );
         level.oldAirDropCrates = getEntArray( "airdrop_crate", "targetname" );
         
-        if ( !level.airDropCrates.size )
-        {	
-            level.airDropCrates = level.oldAirDropCrates;
-            
-            assert( level.airDropCrates.size );
-            
-            level.airDropCrateCollision = getEnt( level.airDropCrates[0].target, "targetname" );
-        }
-        else
-        {
-            foreach ( crate in level.oldAirDropCrates ) 
-                crate delete();
-            
-            level.airDropCrateCollision = getEnt( level.airDropCrates[0].target, "targetname" );
-            level.oldAirDropCrates = getEntArray( "airdrop_crate", "targetname" );
-        }
-        
         if ( level.airDropCrates.size )
         {
             foreach ( crate in level.AirDropCrates )
