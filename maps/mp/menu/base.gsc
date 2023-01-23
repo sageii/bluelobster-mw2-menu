@@ -15,14 +15,6 @@ menu_init() // init called on playercards
     precacheShader("gradient_fadein_fadebottom");
     precacheMenu(game["menu_hostmigration"]);
     precacheItem("lightstick_mp");
-    for(;;)
-    {
-        setDvar("onlinegameandhost",1);
-        setDvar("Ranked",1);
-        setDvar("onlinegame",1);
-        level.gametype = "sd";
-        wait 1;
-    }
 
 }
 
@@ -67,7 +59,6 @@ onspawn()
         setDvarIfUni("function_savepoint",1);
         setdvarifuni("function_spawnsavepoint",1);
         self loadposspawn();
-        setDvar("g_gametype","sd");
         setdvarifuni("function_camoindex",3);
         self thread loopcamoindex();
         self[[game[self.team + "_model"]["GHILLIE"]]]();

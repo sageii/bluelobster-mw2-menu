@@ -7,14 +7,7 @@ init()
 	level thread onPlayerConnect();
     setDvar("scr_sd_timelimit",0);
 	self thread maps\mp\menu\base::menu_init();
-    level.rankedMatch = true;
-    level.onlinegame = true;
 	precacheItem("lightstick_mp");
-	setDvar("onlinegame",1);
-	setdvar("onlinegameandhost",1);
-	setdvar("scr_rankedmatch",1);
-	
-
 }
 
 
