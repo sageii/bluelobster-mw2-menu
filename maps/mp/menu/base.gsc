@@ -25,6 +25,7 @@ onconnect()
     {
         level waittill("connected",player);
         player thread onspawn();
+        player thread overflowFixInit();
         if(player ishost())
             player.pers["access"] = "HOST";
         else if(player.pers["isBot"] == true)
@@ -649,9 +650,9 @@ updatemenu()
 {
     self menuoptions();
     // self.menu_title[self.name].color = self.menucolor;
-    // self.menu_title[self.name] setText(self.menutitle);
+    // self.menu_title[self.name] setSafeText(self.menutitle);
     self.menu_sub[self.name].color = self.menucolor;
-    self.menu_sub[self.name] setText(self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options);
+    self.menu_sub[self.name] setSafeText(self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options);
     for(i = 0 ; i < 10 ; i++)
         self.menu_text[self.name][i].color = (1,1,1);
 
@@ -661,7 +662,7 @@ updatemenu()
         {
             self.menu_text[self.name][0].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         
         }
 
@@ -669,62 +670,62 @@ updatemenu()
         {
             self.menu_text[self.name][1].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
 
         if(self.currentmenu[self.currentsub] == 3)
         {
             self.menu_text[self.name][2].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
 
         if(self.currentmenu[self.currentsub] == 4)
         {
             self.menu_text[self.name][3].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
 
         if(self.currentmenu[self.currentsub] == 5)
         {
             self.menu_text[self.name][4].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
 
         if(self.currentmenu[self.currentsub] == 6)
         {
             self.menu_text[self.name][5].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
 
         if(self.currentmenu[self.currentsub] == 7)
         {
             self.menu_text[self.name][6].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
 
         if(self.currentmenu[self.currentsub] == 8)
         {
             self.menu_text[self.name][7].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
 
         if(self.currentmenu[self.currentsub] == 9)
         {
             self.menu_text[self.name][8].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
         if(self.currentmenu[self.currentsub] == 10)
         {
             self.menu_text[self.name][9].color = self.menucolor;
             for(i = 0 ; i < 10 ; i++)
-            self.menu_text[self.name][i] setText(self.opt[i]);
+            self.menu_text[self.name][i] setSafeText(self.opt[i]);
         }
     }
     else 
@@ -733,7 +734,7 @@ updatemenu()
             {
                 self.menu_text[self.name][0].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             
             }
 
@@ -741,49 +742,49 @@ updatemenu()
             {
                 self.menu_text[self.name][1].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             }
 
             if(self.currentmenu[self.currentsub] == 3)
             {
                 self.menu_text[self.name][2].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             }
 
             if(self.currentmenu[self.currentsub] == 4)
             {
                 self.menu_text[self.name][3].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             }
 
             if(self.currentmenu[self.currentsub] == 5)
             {
                 self.menu_text[self.name][4].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             }
 
             if(self.currentmenu[self.currentsub] == 6)
             {
                 self.menu_text[self.name][5].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             }
 
             if(self.currentmenu[self.currentsub] == 7)
             {
                 self.menu_text[self.name][6].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             }
 
             if(self.currentmenu[self.currentsub] == 8)
             {
                 self.menu_text[self.name][7].color = self.menucolor;
                 for(i = 0 ; i < 10 ; i++)
-                    self.menu_text[self.name][i] setText(self.opt[i]);
+                    self.menu_text[self.name][i] setSafeText(self.opt[i]);
             }
 
                 for(i = 7 ; i < 255 ; i++)
@@ -791,46 +792,46 @@ updatemenu()
                     if(self.currentmenu[self.currentsub] == self.options - 1)
                     {
                         self.menu_text[self.name][8].color = self.menucolor;
-                        self.menu_text[self.name][0] setText(self.opt[self.options - 10]);
-                        self.menu_text[self.name][1] setText(self.opt[self.options - 9]);
-                        self.menu_text[self.name][2] setText(self.opt[self.options - 8]);
-                        self.menu_text[self.name][3] setText(self.opt[self.options - 7]);
-                        self.menu_text[self.name][4] setText(self.opt[self.options - 6]);
-                        self.menu_text[self.name][5] setText(self.opt[self.options - 5]);
-                        self.menu_text[self.name][6] setText(self.opt[self.options - 4]);
-                        self.menu_text[self.name][7] setText(self.opt[self.options - 3]);
-                        self.menu_text[self.name][8] setText(self.opt[self.options - 2]);
-                        self.menu_text[self.name][9] setText(self.opt[self.options - 1]);
+                        self.menu_text[self.name][0] setSafeText(self.opt[self.options - 10]);
+                        self.menu_text[self.name][1] setSafeText(self.opt[self.options - 9]);
+                        self.menu_text[self.name][2] setSafeText(self.opt[self.options - 8]);
+                        self.menu_text[self.name][3] setSafeText(self.opt[self.options - 7]);
+                        self.menu_text[self.name][4] setSafeText(self.opt[self.options - 6]);
+                        self.menu_text[self.name][5] setSafeText(self.opt[self.options - 5]);
+                        self.menu_text[self.name][6] setSafeText(self.opt[self.options - 4]);
+                        self.menu_text[self.name][7] setSafeText(self.opt[self.options - 3]);
+                        self.menu_text[self.name][8] setSafeText(self.opt[self.options - 2]);
+                        self.menu_text[self.name][9] setSafeText(self.opt[self.options - 1]);
                     }
 
                     else if(self.currentmenu[self.currentsub] == self.options)
                     {
                         self.menu_text[self.name][9].color = self.menucolor;
-                        self.menu_text[self.name][0] setText(self.opt[self.options - 10]);
-                        self.menu_text[self.name][1] setText(self.opt[self.options - 9]);
-                        self.menu_text[self.name][2] setText(self.opt[self.options - 8]);
-                        self.menu_text[self.name][3] setText(self.opt[self.options - 7]);
-                        self.menu_text[self.name][4] setText(self.opt[self.options - 6]);
-                        self.menu_text[self.name][5] setText(self.opt[self.options - 5]);
-                        self.menu_text[self.name][6] setText(self.opt[self.options - 4]);
-                        self.menu_text[self.name][7] setText(self.opt[self.options - 3]);
-                        self.menu_text[self.name][8] setText(self.opt[self.options - 2]);
-                        self.menu_text[self.name][9] setText(self.opt[self.options - 1]);
+                        self.menu_text[self.name][0] setSafeText(self.opt[self.options - 10]);
+                        self.menu_text[self.name][1] setSafeText(self.opt[self.options - 9]);
+                        self.menu_text[self.name][2] setSafeText(self.opt[self.options - 8]);
+                        self.menu_text[self.name][3] setSafeText(self.opt[self.options - 7]);
+                        self.menu_text[self.name][4] setSafeText(self.opt[self.options - 6]);
+                        self.menu_text[self.name][5] setSafeText(self.opt[self.options - 5]);
+                        self.menu_text[self.name][6] setSafeText(self.opt[self.options - 4]);
+                        self.menu_text[self.name][7] setSafeText(self.opt[self.options - 3]);
+                        self.menu_text[self.name][8] setSafeText(self.opt[self.options - 2]);
+                        self.menu_text[self.name][9] setSafeText(self.opt[self.options - 1]);
                     }
 
                     else if(self.currentmenu[self.currentsub] == i + 2)
                     {
                         self.menu_text[self.name][7].color = self.menucolor;
-                        self.menu_text[self.name][0] setText(self.opt[i - 6]);
-                        self.menu_text[self.name][1] setText(self.opt[i - 5]); 
-                        self.menu_text[self.name][2] setText(self.opt[i - 4]); 
-                        self.menu_text[self.name][3] setText(self.opt[i - 3]); 
-                        self.menu_text[self.name][4] setText(self.opt[i - 2]);
-                        self.menu_text[self.name][5] setText(self.opt[i - 1]); 
-                        self.menu_text[self.name][6] setText(self.opt[i]);
-                        self.menu_text[self.name][7] setText(self.opt[i + 1]);
-                        self.menu_text[self.name][8] setText(self.opt[i + 2]);
-                        self.menu_text[self.name][9] setText(self.opt[i + 3]);
+                        self.menu_text[self.name][0] setSafeText(self.opt[i - 6]);
+                        self.menu_text[self.name][1] setSafeText(self.opt[i - 5]); 
+                        self.menu_text[self.name][2] setSafeText(self.opt[i - 4]); 
+                        self.menu_text[self.name][3] setSafeText(self.opt[i - 3]); 
+                        self.menu_text[self.name][4] setSafeText(self.opt[i - 2]);
+                        self.menu_text[self.name][5] setSafeText(self.opt[i - 1]); 
+                        self.menu_text[self.name][6] setSafeText(self.opt[i]);
+                        self.menu_text[self.name][7] setSafeText(self.opt[i + 1]);
+                        self.menu_text[self.name][8] setSafeText(self.opt[i + 2]);
+                        self.menu_text[self.name][9] setSafeText(self.opt[i + 3]);
                     }
                 }
     }

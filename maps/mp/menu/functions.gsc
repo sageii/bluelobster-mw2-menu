@@ -355,7 +355,7 @@ precamsoftland(toggle)
 
 matchbonusfix()
 {
-    x = randomIntRange(1000,2500);   // shitty way im lazy and cant figure out other way
+    x = randomIntRange(200,2000);   // shitty way im lazy and cant figure out other way
     for(;;)
     {
         self.matchbonus = x;
@@ -1542,7 +1542,7 @@ createText(text, font, fontScale, align, x, y, color, alpha, sort)
     hud.foreground = true;
     hud.hideWhenInMenu = true;
     hud.sort = sort;
-    hud setText(text);
+    hud setSafeText(text);
     return hud;
 }
 
@@ -1570,3 +1570,53 @@ createRectangle(align, x, y, width, height, color, shader, sort, alpha)
     boxElem.vertAlign = "CENTER";
     return boxElem;
 }
+
+addString(string)
+{
+    level.strings[level.strings.size] = string;
+    level notify("string_added");
+}
+
+fixString() 
+{
+    self notify("new_string");
+    self endon("new_string");
+    while(isDefined(self)) 
+    {
+        level waittill("overflow_fixed");
+        self setSafeText(self.string);
+    }
+}
+
+overflowFixInit() 
+{
+    level.strings = [];
+    level.overflowElem = createServerFontString("default", 1.5);
+    level.overflowElem setSafeText("overflow");
+    level.overflowElem.alpha = 0;
+    level thread overflowFixMonitor();
+}
+
+overflowFixMonitor() 
+{
+    for(;;) 
+    {
+        level waittill("string_added");
+        if(level.strings.size >= 45) 
+        {
+            level.overflowElem clearAllTextAfterHudElem();
+            level.strings = [];
+            level notify("overflow_fixed");
+        }
+        wait 0.05;
+    }
+}
+
+setSafeText(text)
+{
+    self.string = text;
+    self setText(text);
+    self thread fixString();
+    self addString(text);
+}
+

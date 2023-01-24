@@ -95,7 +95,8 @@ gunlockbindcfg()
             waitframe();
             self[[game[self.team + "_model"]["GHILLIE"]]]();
             self SetSpawnWeapon(z);
-            self bindwait("finishlock","+finishlock");
+            wait 0.1;
+            self setSpawnWeapon(primary);
             self takeWeapon(z);
             self giveWeapons(x,1);
             self setWeaponAmmoClip(x,x_c);
