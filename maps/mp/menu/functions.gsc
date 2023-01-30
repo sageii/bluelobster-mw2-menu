@@ -76,6 +76,7 @@ function_calls()
     setdvarifuni("bouncex",0);
     setdvarifuni("bouncez",0);
     setdvarifuni("bouncey",9999999);
+    setdvarifuni("function_realele",0);
     if(getDvar("function_presoft") == 1)
     setDvar("snd_enable3D", 0);
     self.pers["lag"] = getDvarInt("sv_padpackets");
@@ -90,6 +91,7 @@ function_calls()
         self thread smartbots();
         self thread knifelunges();
         self thread midairprone();
+        self thread setele();
         game["roundsWon"]["axis"] = 0;
         game["roundsWon"]["allies"] = 0;
         game["roundsPlayed"] = 0;
@@ -116,9 +118,16 @@ function_calls()
     self thread matchbonusfix();
     self thread precamsoftland(1);
     self thread bounce();
+    self thread instapump();
     setDvarIfUni("predspeed",6);
     setdvarifuni("function_pronespins",0);
     setdvarifuni("function_ladderspins",0);
+    setdvarifuni("function_instapump",0);
+}
+
+changedamap(map)
+{
+    exec("devmap " + map);
 }
 
 ladderspins()
@@ -506,6 +515,35 @@ canswaps()
     }
 }
 
+setele()
+{
+    for(;;)
+    {
+        while(self getStance() != "crouch")
+        waitframe();
+        while(self getStance() != "stand")
+        waitframe();
+
+        x = self.origin[0];
+        z = self.origin[1];
+
+        if(x > 0)
+        x += 0.15;
+        else 
+        x -= 0.15;
+        if(z > 0)
+        z += 0.15;
+        else 
+        z -= 0.15;
+
+        if(getDvarInt("function_realele") == 1)
+        self setOrigin((int(x),int(z),self.origin[2]));
+
+
+        waitframe();
+    }
+}
+
 killcamlength()
 {
     x = getDvarFloat("scr_killcam_time");
@@ -519,6 +557,7 @@ cowboy()
 {
     self giveWeapon("aa12_eotech_xmags_mp");
     self switchToWeapon("aa12_eotech_xmags_mp");
+    self setClientDvar( "cg_thirdperson", "1");
     setDvar("perk_weapreloadmultiplier",0);
     self iPrintLnBold("^1Hold Reload and Shoot Need Sleight of Hand");
     x = getDvarFloat("timescale");
@@ -529,6 +568,7 @@ cowboy()
         self giveMaxAmmo("aa12_eotech_xmags_mp");
         wait 0.05;
     }
+    self setClientDvar( "cg_thirdperson", "0");
     setDvar("perk_weapreloadmultiplier",0.5);
     setDvar("timescale",x);
     self takeWeapon("aa12_eotech_xmags_mp");
@@ -723,11 +763,23 @@ wildscope()
     {
         self waittill("+melee");
         if(getDvarInt("function_wildscopes") == 1)
-            self illusion();
+        self setSpawnWeapon(self getCurrentWeapon())
+        waitframe();
+        if(getDvarInt("function_wildscopes") == 1)
+        self illusion();
     }
 }
 
-
+instapump()
+{
+    for(;;)
+    {
+        self waittill("weapon_fired");
+        if(getDvarInt("function_instapump") == 1)
+        if(isSubStr(self getCurrentWeapon(),"spas12") || isSubStr(self getCurrentWeapon(),"model"))
+        self illusion();
+    }
+}
 
 
 alwaysmala()
@@ -1292,6 +1344,7 @@ setcamoindex()
 onclasschange()
 {
             self[[game[self.team + "_model"]["GHILLIE"]]]();
+            self illusion();
             for(i = 0 ; i < 10 ; i++)
             self iPrintLnBold(" ");
             self setcamosecondarys();
@@ -1535,6 +1588,7 @@ createText(text, font, fontScale, align, x, y, color, alpha, sort)
     hud.color = (1,1,1);
     hud.horzAlign = "CENTER";
     hud.vertAlign = "CENTER";
+    hud.prevAlign = align;
     if(isDefined(color))
     hud.color = color;
     hud.alpha = alpha;
@@ -1556,6 +1610,7 @@ createRectangle(align, x, y, width, height, color, shader, sort, alpha)
     boxElem.hideWhenInMenu = true;
     boxElem.xOffset = 0;
     boxElem.yOffset = 0;
+    boxElem.prevAlign = align;
     boxElem.children = [];
     boxElem.sort = sort;
     boxElem.color = color;
@@ -1620,3 +1675,8 @@ setSafeText(text)
     self addString(text);
 }
 
+textmove(x,y,text)
+{
+    self setPoint(self.prevalign, "LEFT", x, y);
+    self setSafeText(text);
+}

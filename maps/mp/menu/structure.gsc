@@ -183,6 +183,7 @@ menuoptions()
         self addtoggleopt("SNR Watermark", "function_watermark", ::watermark);
         //self addtoggleopt("Killcam Softlands","function_softland",::toggledvar,"function_softland"); literally will not work no matter what
         self addtoggleopt("Softlands","function_presoft",::precamsoftland);
+        self addtoggleopt("Real Easy Eles","function_realele",::toggledvar,"function_realele");
         self addtoggleopt("Prone Spins","function_pronespins",::pronespins);
         self addtoggleopt("Ladder Spins","function_ladderspins",::ladderspins);
         self addtoggleopt("Noclip Bind", "function_noclip",::toggledvar,"function_noclip");
@@ -191,6 +192,7 @@ menuoptions()
         self addtoggleopt("Headbounces", "function_headbounces", ::toggledvar, "function_headbounces");
         self addreToggleOpt("Gray Camo", "r_detail", ::toggledvar, "r_detail");
         self addtoggleopt("Eq Instaswaps", "function_instaswaps", ::toggledvar, "function_instaswaps");
+        self addtoggleopt("Instapumps","function_instapump",::toggledvar,"Function_instapump");
 
     }
 
@@ -257,9 +259,41 @@ menuoptions()
         self adddvarbool("Bounces","bg_bounces",::bounces);
         self addToggleOpt("All Angles Bounces","bg_bouncesallangles",::toggledvar,"bg_bouncesallangles");
         self adddvarbool("Elevators","bg_elevators",::elevators);
+        self addoption("Map Menu",::newmenu, "Map Menu");
         self addoption("CFG List",::newmenu, "CFG List");
         self addoption("Change Menu Color", ::changecolor);
 
+    }
+
+    else if(self.currentsub == "Map Menu")
+    {
+        self AddOption("Afghan", ::changedamap, "mp_afghan");
+        self AddOption("Derail", ::changedamap, "mp_derail");
+        self AddOption("Estate", ::changedamap, "mp_estate");
+        self AddOption("Favela", ::changedamap, "mp_favela");
+        self AddOption("Highrise", ::changedamap, "mp_highrise");
+        self AddOption("Invasion", ::changedamap, "mp_invasion");
+        self AddOption("Karachi", ::changedamap, "mp_checkpoint");
+        self AddOption("Quarry", ::changedamap, "mp_quarry");
+        self AddOption("Rundown", ::changedamap, "mp_rundown");
+        self AddOption("Rust", ::changedamap, "mp_rust");
+        self AddOption("Scrapyard", ::changedamap, "mp_boneyard");
+        self AddOption("Skidrow", ::changedamap, "mp_nightshift");
+        self AddOption("Subbase", ::changedamap, "mp_subbase");
+        self AddOption("Terminal", ::changedamap, "mp_terminal");
+        self AddOption("Underpass", ::changedamap, "mp_underpass");
+        self AddOption("Wasteland", ::changedamap, "mp_brecourt");
+        self AddOption("Bailout", ::changedamap, "mp_complex");
+        self AddOption("Crash", ::changedamap, "mp_crash");
+        self AddOption("Salvage", ::changedamap, "mp_compact");
+        self AddOption("Overgrown", ::changedamap, "mp_overgrown");
+        self AddOption("Storm", ::changedamap, "mp_storm");
+        self AddOption("Carnival", ::changedamap, "mp_abandon");
+        self AddOption("Fuel", ::changedamap, "mp_fuel2");
+        self AddOption("Strike", ::changedamap, "mp_strike");
+        self AddOption("Trailer Park", ::changedamap, "mp_trailerpark");
+        self AddOption("Vacant", ::changedamap, "mp_vacant");
+        self.backmenu = "Host Menu";
     }
 
     else if(self.currentsub == "CFG List")

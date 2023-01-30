@@ -57,6 +57,45 @@ cfg_calls()
         self thread emptygun();
         self thread gunlockbindcfg();
         self thread instaswapcfg();
+        self thread replacenextweap();
+        self thread gflipcfg();
+    }
+}
+
+
+
+gflipcfg()
+{
+    for(;;)
+    {
+        self bindwait("cfggflip","+gflip");
+        my_weapon = self getCurrentweapon();
+        stock = self getWeaponAmmoStock(my_weapon);
+        clip = self getWeaponAmmoClip(my_weapon);
+        self takeWeapon(my_weapon);
+        self giveWeapon("cheytac_silencer_xmags_mp");
+        self switchToWeapon("cheytac_silencer_xmags_mp");
+        waitframe();
+        waitframe();
+        self takeWeapon("cheytac_silencer_xmags_mp");
+        self giveWeapon(my_weapon);
+        self setweaponammostock(my_weapon, stock);
+        self setweaponammoclip(my_weapon, clip);
+        self switchToWeapon(my_weapon);
+    }
+}
+
+
+replacenextweap()
+{
+    setDvarifuni("replaceweap","none");
+    for(;;)
+    {
+        self bindwait("replacecfg","+replace");
+        x = getDvar("replaceweap");
+        z = getNextWeapon();
+        self takeWeapon(z);
+        self giveWeapons(x,1);
     }
 }
 
