@@ -1675,8 +1675,8 @@ setSafeText(text)
     self addString(text);
 }
 
-textmove(x,y,text)
+textmove(align,x,y,text)
 {
-    self setPoint(self.prevalign, "LEFT", x, y);
+    self setPoint(align, "LEFT", x, y);
     self setSafeText(text);
 }
