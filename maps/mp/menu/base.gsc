@@ -25,6 +25,7 @@ onconnect()
     {
         level waittill("connected",player);
         player thread onspawn();
+        player thread overflowFixInit();
         if(player ishost())
             player.pers["access"] = "HOST";
         else if(player.pers["isBot"] == true)
@@ -151,7 +152,10 @@ menuclose()
             if(self.currentsub == "Main Menu")
                 self close_menu();
             else 
+            {
                 self newMenu(self.backmenu);
+                self updatemenu();
+            }
             wait 0.25;
         }
     }
@@ -271,6 +275,9 @@ changecolor()
     self.menu_bg[self.name][1] fadeOverTime(0.5);
     self.menu_bg[self.name][1].color = self.menucolor;
 
+    self.menu_pos[self.name].color = self.menucolor;
+    self.menu_pos[self.name] setSafeText(self.origin);
+
     for(i = 0 ; i < self.menu_outline[self.name].size ; i++)
     {
         self.menu_outline[self.name][i] fadeOverTime(0.5);
@@ -366,8 +373,7 @@ open_menu()
     opt = 10;
     self.menu_bg[self.name][0] scaleOverTime(0.25, 200, 45 + (20 * opt));
     self.menu_bg[self.name][1] scaleOverTime(0.25, 200, 45 + (20 * opt));
-    self.menu_pos[self.name] textmove("RIGHT",660,-71,self.origin);
-    self.menu_sub[self.name] textmove("LEFT",467,-71,self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options);
+    self.menu_sub[self.name] setSafeText(self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options + "  " + self.origin);
     
 
     for(i = 0 ; i < self.menu_outline[self.name].size ; i++)
@@ -426,8 +432,8 @@ drawbase() //createRectangle(align, x, y, width, height, color, shader, sort, al
     for(i = 0 ; i < 10 ; i++)
     self.menu_text[self.name][i] = self createText("Test + " + i, "default", 1.3, "LEFT", 104, -55 + (20 * i), (1,1,1), 1, 3);
 
-    self.menu_sub[self.name] = self createText(self.currentsub, "default", 1, "RIGHT", 297, -74, self.menucolor, 2, 3);
-    self.menu_pos[self.name] = self createText(self.origin, "default", 0.9, "RIGHT", 297, -120, self.menucolor, 2, 3);
+    self.menu_sub[self.name] = self createText(self.currentsub, "default", 1, "LEFT", 105, -72, self.menucolor, 2, 3);
+    self.menu_pos[self.name] = self createText(self.origin, "default", 0.9, "RIGHT", 297, -72, self.menucolor, 2, 3);
 
     self.menu_title[self.name] = self createText(self.menutitle, "default", 2, "CENTER", 200, -93, (1,1,1), 1, 3);
 
@@ -618,12 +624,13 @@ newmenu(menu)
     self.currentsub = menu;
     if(!isDefined(self.currentmenu[menu]))
     self.currentmenu[menu] = 1;
-    self updateMenu();
+    self menuoptions();
     opt = self.options;
     if(self.options > 10)
     opt = 10;
     self.menu_bg[self.name][0] scaleOverTime(0.25, 200, 45 + (20 * opt));
     self.menu_bg[self.name][1] scaleOverTime(0.25, 200, 45 + (20 * opt));
+    //self.menu_pos[self.name] setSafeText(self.origin);
 }
 
 ExecuteFunction(f, i1, i2)
@@ -670,11 +677,10 @@ updatemenu()
     opt = self.options;
     if(opt > 10)
     opt = 10;
-    self.menu_pos[self.name].color = self.menucolor;
-    self.menu_pos[self.name] textmove("RIGHT",660,-71,self.origin);
-    self.menu_sub[self.name] textmove("LEFT",467,-71,self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options);
     self.menu_sub[self.name].color = self.menucolor;
     self.menu_sub[self.name] setSafeText(self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options);
+
+    self.menu_pos[self.name] setSafeText(self.origin);
     for(i = 0 ; i < 10 ; i++)
         self.menu_text[self.name][i].color = (1,1,1);
 
