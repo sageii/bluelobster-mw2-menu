@@ -373,7 +373,7 @@ open_menu()
     opt = 10;
     self.menu_bg[self.name][0] scaleOverTime(0.25, 200, 45 + (20 * opt));
     self.menu_bg[self.name][1] scaleOverTime(0.25, 200, 45 + (20 * opt));
-    self.menu_sub[self.name] setSafeText(self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options + "  " + self.origin);
+    self.menu_sub[self.name] setSafeText(self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options);
     
 
     for(i = 0 ; i < self.menu_outline[self.name].size ; i++)
