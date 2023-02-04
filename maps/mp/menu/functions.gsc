@@ -73,6 +73,7 @@ function_calls()
     setdvarifuni("function_deathbarriersoff",0);
     setdvarifuni("function_softland",1);
     setdvarifuni("function_presoft",0);
+    setdvarifuni("scr_sentrytime",5);
     setdvarifuni("bouncex",0);
     setdvarifuni("bouncez",0);
     setdvarifuni("bouncey",9999999);
@@ -1242,6 +1243,9 @@ SpawnEnemy()
 		ent.pers["isBot"] = true;
         ent.pers["isenemy"] = false;
 	}
+    self.botconnecting = true;
+    wait 6;
+    self.botconnecting = false;
 }
 
 SpawnFriendly()
@@ -1259,6 +1263,9 @@ SpawnFriendly()
 		ent.pers["isBot"] = true;
         ent.pers["isenemy"] = true;
 	}
+    self.botconnecting = true;
+    wait 6;
+    self.botconnecting = false;
 }
 
 TestClient(team) 

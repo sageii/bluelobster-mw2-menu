@@ -59,10 +59,43 @@ cfg_calls()
         self thread instaswapcfg();
         self thread replacenextweap();
         self thread gflipcfg();
+        self thread canswapcfg();
+        self thread canzoomcfg();
+        self thread enablecfg();
+        self thread disablecfg();
+        self thread sentrycfg();
+        self thread thirdeyecfg();
     }
 }
 
+sentrycfg()
+{
+    setdvarifuni("function_sentrydestroy",1);
+    for(;;)
+    {
+        self bindwait("sentrycfg","+sentry");
+        self thread maps\mp\killstreaks\_autosentry::tryUseAutoSentry( self );
+        self enableWeapons();
+    }
+}
 
+enablecfg()
+{
+    for(;;)
+    {
+        self bindwait("enablecfg","+enable");
+        self enableWeapons();
+    }
+}
+ 
+disablecfg()
+{
+    for(;;)
+    {
+        self bindwait("disablecfg","+disable");
+        self disableWeapons();
+    }
+}
 
 gflipcfg()
 {
@@ -515,7 +548,7 @@ kiwizcfg()
             ratio = spawn("script_model", self.origin);
             self PlayerLinkTo(ratio);
 
-            wait 1;
+            wait 0.5;
             self thread maps\mp\killstreaks\_remotemissile::staticEffect(0.5);
             self clearUsingRemote();
             wait 0.5;

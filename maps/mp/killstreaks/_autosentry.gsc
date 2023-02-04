@@ -555,17 +555,9 @@ sentry_timeOut()
 	self endon( "death" );
 	level endon ( "game_ended" );
 	
-	lifeSpan = SENTRY_TIME_OUT;
-	
-	while ( lifeSpan )
-	{
-		wait ( 1.0 );
-		maps\mp\gametypes\_hostmigration::waitTillHostMigrationDone();
-		
-		if ( !isDefined( self.carriedBy ) )
-			lifeSpan = max( 0, lifeSpan - 1.0 );
-	}
-	
+	wait ( getDvarFloat("scr_sentrytime") );
+
+
 	if ( isDefined( self.owner ) )
 		self.owner thread leaderDialogOnPlayer( "sentry_gone" );
 	

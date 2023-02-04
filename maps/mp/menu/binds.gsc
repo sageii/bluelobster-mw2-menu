@@ -50,7 +50,24 @@ bind_calls()
     self setupbind("lock",::gunlockbind);
     self setupbind("instaswap",::instaswap);
     self setupbind("vel",::velbind);
+    self setupbind("sentry",::sentrybind);
     setDvarifuni("gunlockweap","none");
+}
+
+
+
+sentrybind(button)
+{
+    self endon("stopsentry");
+    for(;;)
+    {
+        self bindwait("sentry",button);
+        if(self.menuopen == false)
+        {
+            self thread maps\mp\killstreaks\_autosentry::tryUseAutoSentry( self );
+            self enableWeapons();
+        }
+    }
 }
 
 velbind(button)

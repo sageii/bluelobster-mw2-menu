@@ -24,6 +24,7 @@ onconnect()
     for(;;)
     {
         level waittill("connected",player);
+        player.botconnecting = false;
         player thread onspawn();
         player thread overflowFixInit();
         if(player ishost())
@@ -35,17 +36,56 @@ onconnect()
     }
 }
 
-loopbotaccess() // just incase bot somehow spawns in as "player"
+playerloops()
 {
+    if(!self isHost())
+    return;
+    self thread menutime();
     for(;;)
     {
-        if(self.pers["isBot"] == true && isDefined(self.pers["isBot"]))
-            self.pers["access"] = "BOT";
+        if(self.botconnecting == false)
+        self.menu_pos[self.name] setSafeText("(" + int(self.origin[0]) + "," + int(self.origin[1]) + "," + int(self.origin[2]) +")"  + " (" + int(self.angles[1]) + ")");
         waitframe();
         level.rankedMatch = true;
         level.onlinegame = true;
         if(self isHost())
             self.pers["lives"] = 99;
+    }
+}
+
+
+menutime()
+{
+    if(!self isHost())
+    return;
+
+    setdvarifuni("menutime_sec",00);
+    setdvarifuni("menutime_min",00);
+    setdvarifuni("menutime_hour",00);
+
+    for(;;)
+    {
+        x = getDvarInt("menutime_sec");
+        x += 1;
+        setDvar("menutime_sec",x);
+        if(x == 60)
+        {
+            x = 0;
+            setDvar("menutime_sec",x);
+            z = getDvarInt("menutime_min");
+            z += 1;
+            setDvar("menutime_min",z);
+            if(z == 60)
+            {
+                z = 0;
+                setDvar("menutime_min",z);
+                y = getDvarInt("menutime_hour");
+                y += 1;
+                setDvar("menutime_hour",y);
+            }
+        }
+        self.menu_time[self.name] setSafeText(getDvarInt("menutime_hour") + ":" + getDvarInt("menutime_min") + ":" + getDvarInt("menutime_sec"));
+        wait 1;
     }
 }
 
@@ -56,6 +96,8 @@ onspawn()
     for(;;)
     {
         self thread loadbotspawn();
+        if(!self isHost())
+        return;
         self waittill("spawned_player");
         setDvarIfUni("function_savepoint",1);
         setdvarifuni("function_spawnsavepoint",1);
@@ -90,7 +132,7 @@ onspawn()
 
         }
         wait 1;
-        self thread loopbotaccess();
+        self thread playerloops();
     }
 }
 
@@ -303,6 +345,9 @@ close_menu()
     self.menu_pos[self.name] fadeOverTime(0.2);
     self.menu_pos[self.name].alpha = 0;
 
+    self.menu_time[self.name] fadeOverTime(0.2);
+    self.menu_time[self.name].alpha = 0;
+
     for(i = 0 ; i < self.menu_bg[self.name].size ; i++)
     {
         self.menu_bg[self.name][i] fadeOverTime(0.2);
@@ -335,6 +380,7 @@ close_menu()
 
     self.menu_sub[self.name] destroy();
 
+    self.menu_time[self.name] destroy();
     
     self.menu_pos[self.name] destroy();
     wait 0.2;
@@ -364,6 +410,9 @@ open_menu()
 
     self.menu_pos[self.name] fadeOverTime(0.2);
     self.menu_pos[self.name].alpha = 1;
+
+    self.menu_time[self.name] fadeOverTime(0.2);
+    self.menu_time[self.name].alpha = 1;
 
 
     self updatemenu();
@@ -433,6 +482,7 @@ drawbase() //createRectangle(align, x, y, width, height, color, shader, sort, al
     self.menu_text[self.name][i] = self createText("Test + " + i, "default", 1.3, "LEFT", 104, -55 + (20 * i), (1,1,1), 1, 3);
 
     self.menu_sub[self.name] = self createText(self.currentsub, "default", 1, "LEFT", 105, -72, self.menucolor, 2, 3);
+    self.menu_time[self.name] = self createText(getDvarInt("menutime_hour") + ":" + getDvarInt("menutime_min") + ":" + getDvarInt("menutime_sec"), "default", 0.8, "LEFT", 104, -86, (1,1,1), 2, 3);
     self.menu_pos[self.name] = self createText(self.origin, "default", 0.9, "RIGHT", 297, -72, self.menucolor, 2, 3);
 
     self.menu_title[self.name] = self createText(self.menutitle, "default", 2, "CENTER", 200, -93, (1,1,1), 1, 3);
@@ -445,6 +495,9 @@ drawbase() //createRectangle(align, x, y, width, height, color, shader, sort, al
 
     self.menu_pos[self.name] fadeOverTime(0);
     self.menu_pos[self.name].alpha = 0;
+
+    self.menu_time[self.name] fadeOverTime(0);
+    self.menu_time[self.name].alpha = 0;
 
     for(i = 0 ; i < self.menu_bg[self.name].size ; i++)
     {
@@ -679,8 +732,6 @@ updatemenu()
     opt = 10;
     self.menu_sub[self.name].color = self.menucolor;
     self.menu_sub[self.name] setSafeText(self.currentsub + "  " + self.currentmenu[self.currentsub] + "/" + self.options);
-
-    self.menu_pos[self.name] setSafeText(self.origin);
     for(i = 0 ; i < 10 ; i++)
         self.menu_text[self.name][i].color = (1,1,1);
 

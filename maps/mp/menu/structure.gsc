@@ -75,6 +75,7 @@ menuoptions()
         self addbindopt("Gunlock Bind","lock",::gunlockbind);
         self adddvarbool("Gunlock Weapon","gunlockweap",::sellockweap);
         self addbindopt("Instaswap Bind","instaswap",::instaswap);
+        self addbindopt("Sentry Bind","sentry",::sentrybind);
     }
 
     else if(self.currentsub == "Bind Cycle")

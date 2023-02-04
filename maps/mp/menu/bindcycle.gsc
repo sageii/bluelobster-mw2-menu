@@ -330,7 +330,7 @@ do_pred()
     ratio = spawn("script_model", self.origin);
     self PlayerLinkTo(ratio);
 
-    wait 1;
+    wait 0.5;
     self thread maps\mp\killstreaks\_remotemissile::staticEffect(0.5);
     self clearUsingRemote();
     wait 0.5;
