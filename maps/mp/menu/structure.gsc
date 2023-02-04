@@ -340,8 +340,8 @@ menuoptions()
         self addoption("+blast");
         self addoption("+painkiller");
         self addoption("+altswap");
-        self addoption("+gunlock / +finishlock");
-        self addoption("finishlock to give back offhand weapon");
+        self addoption("+gunlock");
+        self addoption("+sentry");
         self.backmenu = "Host Menu";
     }
 
