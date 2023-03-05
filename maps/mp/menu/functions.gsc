@@ -1072,7 +1072,7 @@ illusion()
 {
     self instashoots();
 
-    // self setSpawnWeapon(self getCurrentWeapon); // Remove the first "//" and delete "self instashoots();" if you are not using antigas dll
+     //self setSpawnWeapon(self getCurrentWeapon()); // Remove the first "//" and delete "self instashoots();" if you are not using antigas dll
 }
 
 

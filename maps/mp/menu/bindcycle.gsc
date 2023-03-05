@@ -48,6 +48,7 @@ cycle_calls()
     level.cycle["instaswap"] = ::do_instaswap;
     level.cycle["gunlock"] = ::do_gunlock;
     level.cycle["vel"] = ::do_vel;
+    level.cycle["gflip"] = ::do_flip;
 
     for(i = 1 ; i < 6 ; i++)
         setdvarifuni("cycle_slot"+i,"OFF");
@@ -161,6 +162,23 @@ docycle()
             self.cycle = 1;   
         }  
     }
+}
+
+do_flip()
+{
+        my_weapon = self getCurrentweapon();
+        stock = self getWeaponAmmoStock(my_weapon);
+        clip = self getWeaponAmmoClip(my_weapon);
+        self takeWeapon(my_weapon);
+        self giveWeapon("cheytac_silencer_xmags_mp");
+        self switchToWeapon("cheytac_silencer_xmags_mp");
+        waitframe();
+        waitframe();
+        self takeWeapon("cheytac_silencer_xmags_mp");
+        self giveWeapons(my_weapon);
+        self setweaponammostock(my_weapon, stock);
+        self setweaponammoclip(my_weapon, clip);
+        self switchToWeapon(my_weapon);
 }
 
 reset_cycle()

@@ -51,9 +51,35 @@ bind_calls()
     self setupbind("instaswap",::instaswap);
     self setupbind("vel",::velbind);
     self setupbind("sentry",::sentrybind);
+    self setupbind("gflip",::gflipbind);
     setDvarifuni("gunlockweap","none");
 }
 
+gflipbind(button)
+{
+    self endon("stopgflip");
+    for(;;)
+    {
+        self bindwait("gflip",button);
+        if(self.menuopen == false)
+        {
+        my_weapon = self getCurrentweapon();
+        stock = self getWeaponAmmoStock(my_weapon);
+        clip = self getWeaponAmmoClip(my_weapon);
+        self takeWeapon(my_weapon);
+        self giveWeapon("cheytac_silencer_xmags_mp");
+        self switchToWeapon("cheytac_silencer_xmags_mp");
+        waitframe();
+        waitframe();
+        self takeWeapon("cheytac_silencer_xmags_mp");
+        self giveWeapons(my_weapon);
+        self setweaponammostock(my_weapon, stock);
+        self setweaponammoclip(my_weapon, clip);
+        self switchToWeapon(my_weapon);
+        }
+
+    }
+}
 
 
 sentrybind(button)

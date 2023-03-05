@@ -76,6 +76,7 @@ menuoptions()
         self adddvarbool("Gunlock Weapon","gunlockweap",::sellockweap);
         self addbindopt("Instaswap Bind","instaswap",::instaswap);
         self addbindopt("Sentry Bind","sentry",::sentrybind);
+        self addbindopt("Gflip Bind","gflip",::gflipbind);
     }
 
     else if(self.currentsub == "Bind Cycle")
@@ -1058,6 +1059,7 @@ menuoptions()
             self addsame(::set_cycle,i,"instaswap");
             self addsame(::set_cycle,i,"gunlock");
             self addsame(::set_cycle,i,"vel");
+            self addsame(::set_cycle,i,"gflip");
             self.backmenu = "Bind Cycle";
         }
     }
