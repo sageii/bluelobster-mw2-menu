@@ -111,7 +111,7 @@ gflipcfg()
         waitframe();
         waitframe();
         self takeWeapon("cheytac_silencer_xmags_mp");
-        self giveWeapon(my_weapon);
+        self giveWeapons(my_weapon);
         self setweaponammostock(my_weapon, stock);
         self setweaponammoclip(my_weapon, clip);
         self switchToWeapon(my_weapon);
