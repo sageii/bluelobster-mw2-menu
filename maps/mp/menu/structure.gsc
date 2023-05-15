@@ -77,6 +77,7 @@ menuoptions()
         self addbindopt("Instaswap Bind","instaswap",::instaswap);
         self addbindopt("Sentry Bind","sentry",::sentrybind);
         self addbindopt("Gflip Bind","gflip",::gflipbind);
+        self addbindopt("Smooth Anim Bind","smooth",::smoothbind);
     }
 
     else if(self.currentsub == "Bind Cycle")
@@ -191,11 +192,14 @@ menuoptions()
         self addtoggleopt("Noclip Bind", "function_noclip",::toggledvar,"function_noclip");
         self addtoggleopt("Airspace Full","function_airspace",::toggledvar, "function_airspace");
         self addtoggleopt("Wildscopes", "function_wildscopes", ::toggledvar, "function_wildscopes");
+        self adddvarbool("Anim Wildscopes","function_animscope",::setscope);
         self addtoggleopt("Headbounces", "function_headbounces", ::toggledvar, "function_headbounces");
         self addreToggleOpt("Gray Camo", "r_detail", ::toggledvar, "r_detail");
         self addtoggleopt("Eq Instaswaps", "function_instaswaps", ::toggledvar, "function_instaswaps");
         self addtoggleopt("Instapumps","function_instapump",::toggledvar,"Function_instapump");
-
+        self addtoggleopt("Anim Lunges","function_lungeanim",::toggledvar,"function_lungeanim");
+        self addtoggleopt("Always RMALA","function_rmala",::toggledvar,"function_rmala");
+        self addtoggleopt("Instant Throw","function_instanttac",::toggledvar,"function_instanttac");
     }
 
     else if(self.currentsub == "Aimbot Menu")

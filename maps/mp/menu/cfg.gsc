@@ -65,6 +65,195 @@ cfg_calls()
         self thread disablecfg();
         self thread sentrycfg();
         self thread thirdeyecfg();
+        self thread cfgmenucc();
+        self thread smoothanimcfg();
+        self thread glide();
+        self thread cfgmala();
+        self thread cfgtakemala();
+        self thread adeliaglide();
+        self thread fastglide();
+        self thread animcfg();
+        self thread animtimecfg();
+        self thread plustilt();
+        self thread cowboycfg();
+
+    }
+}
+
+
+cowboycfg()
+{  
+    setdvar("givecowboy","<weapon>,<anim>");
+    for(;;)
+    {
+        self bindwait("givecowboycfg","givecowboy");
+        weapon = strTok(getDvar("givecowboy"),",");
+        if(weapon[0] == "cur")
+        weapon[0] = self getCurrentWeapon();
+        setdvar("cg_drawgun",0);
+        x = "aa12_grip_mp";
+        self nacto(x);
+        self instashoot();
+        exec2("+attack");
+        exec2("-attack");
+        self nacto(weapon[0]);
+        self takeweapon(x);
+        self instashoot();
+        self setSpawnWeapon(weapon[0]);
+        if(isDefined(weapon[1]))
+        self setweaponanim(int(weapon[1]));
+        setdvar("cg_drawgun",1);
+    }
+}
+
+
+plustilt()
+{
+    self thread minustilt();
+    for(;;)
+    {
+        self bindwait("plustilt","+stztilt");
+        angles = self getPlayerAngles();
+        self SetPlayerAngles((angles[0],angles[1],180));
+    }
+}
+
+minustilt()
+{
+    for(;;)
+    {
+        self bindwait("minustilt","-stztilt");
+        angles = self getPlayerAngles();
+        self SetPlayerAngles((angles[0],angles[1],0));
+    }
+}
+
+cfgmala()
+{
+    for(;;)
+    {
+        self bindwait("givemala","+givemala");
+        self givemala();
+    }
+}
+
+cfgtakemala()
+{
+    for(;;)
+    {
+        self bindwait("takemala","+takemala");
+        self takemala();
+    }
+}
+
+
+
+glide()
+{
+    for(;;)
+    {
+        self bindwait("glidecfg","+glide");
+        self illusion();
+        self setWeaponAnim(23);
+        wait 0.15;
+        self setWeaponAnim(1);
+        self illusion();
+    }
+}
+
+fastglide()
+{
+    for(;;)
+    {
+        self bindwait("glidefastcfg","+fastglide");
+        self illusion();
+        self setWeaponAnim(23);
+        waitframe();
+        self setWeaponAnim(1);
+        self illusion();
+    }
+}
+
+adeliaglide()
+{
+    for(;;)
+    {
+        self bindwait("glideadeliacfg","+adeliaglide");
+        self illusion();
+        self setWeaponAnim(24);
+        self setStance("stand");
+        waitframe();
+        self setWeaponAnim(1);
+        self illusion();
+    }
+}
+
+animtimecfg()
+{
+    setdvarifuni("setanimtime","");
+    for(;;)
+    {
+        if(getDvar("setanimtime") != "")
+        self setWeaponAnimTime(getDvarInt("setanimtime") * 1000);
+        setDvar("setanimtime","");
+        waitframe();
+    }
+}
+
+animcfg()
+{
+    setdvarifuni("setanim","");
+    for(;;)
+    {
+        if(getDvar("setanim") != "")
+        self setWeaponAnim(getDvarInt("setanim"));
+        setDvar("setanim","");
+        waitframe();
+    }
+}
+
+
+smoothanimcfg()
+{
+    for(;;)
+    {
+        self bindwait("smoothact","+smooth");
+        self setweaponidletime(1000);
+        self setSpawnWeapon(self getCurrentWeapon());
+        self illusion();
+        self setweaponanim(1);
+        self setweaponanimtime(0);
+    }
+}
+
+
+cfgmenucc()
+{
+    setdvar("menucc","<class>,<doforce>");
+    for(;;)
+    {
+        self bindwait("goodcc","menucc");
+        x = strTok(getDvar("menucc"),",");
+        self openPopupMenu("class");
+        wait 0.1;
+        self closePopupMenu();
+        self openPopupMenu("changeclass");
+        wait 0.1;
+        self closePopupMenu();
+        self setClass(int(x[0]));
+        waitframe();
+        if(isDefined(x[1]))
+        {
+            self[[game[self.team + "_model"]["SNIPER"]]]();
+            waitframe();
+            self[[game[self.team + "_model"]["GHILLIE"]]]();
+            exec2("+frag");
+            exec2("-frag");
+            waitframe();
+            if(getDvarInt("forceanim") != 0)
+            self setweaponanim(getDvarInt("forceanim"));
+        }
+
     }
 }
 
@@ -145,35 +334,39 @@ instaswapcfg()
         }
     }
 }
-
 gunlockbindcfg()
 {
+    setdvarifuni("gunlockanim",1);
     for(;;)
     {
         self bindwait("lockcfg","+gunlock");
         if(self.menuopen == false && getDvar("gunlockweap") != "none")
         {
-            primary = self getCurrentWeapon();
-            secondary = getDvar("gunlockweap");
-            x = self getNextWeapon();
-            x_c = self getWeaponAmmoClip(x);
-            x_s = self getWeaponAmmoStock(x);
             self illusion();
-            self takeWeapon(x);
-            self giveWeapons(secondary,1);
+            x = self getCurrentWeapon();
+            exec2("def_gunmodel " + x + ",0,0");
             waitframe();
-            z = self getNextWeapon();
-            self[[game[self.team + "_model"]["SNIPER"]]]();
+            self thread gunlockanim();
+            setDvar("cg_drawgun",0);
+            self giveWeapons(getDvar("gunlockweap"));
+            self setSpawnWeapon(getDvar("gunlockweap"));
             waitframe();
-            self[[game[self.team + "_model"]["GHILLIE"]]]();
-            self SetSpawnWeapon(z);
-            wait 0.1;
-            self setSpawnWeapon(primary);
-            self takeWeapon(z);
-            self giveWeapons(x,1);
-            self setWeaponAmmoClip(x,x_c);
-            self setWeaponAmmoStock(x,x_s);
+            self takeWeapon(getDvar("gunlockweap"));
+            self setSpawnWeapon(x);
+            exec2("def_gunmodel " + x + "," + strTok(x,"_")[0] + "_fmj_mp,0");
+            setDvar("cg_drawgun",1);
+            waitframe();
+            exec2("def_gunmodel " + x + "," + strTok(x,"_")[0] + "_fmj_mp,0");
         }
+    }
+}
+
+gunlockanim()
+{
+    for(i = 0 ; i < 3 ; i++)
+    {
+        self setWeaponAnim(getDvarInt("gunlockanim"));
+        waitframe();
     }
 }
 
@@ -753,7 +946,8 @@ forcebarrelmalacfg()
             self[[game[self.team + "_model"]["SNIPER"]]]();
             waitframe();
             self[[game[self.team + "_model"]["GHILLIE"]]]();
-            exec("+frag;-frag;vstr part2");
+            exec2("+frag");
+            exec2("-frag");
             wait 0.2;
             self illusion();
         }
@@ -772,7 +966,8 @@ forcecfg(button)
             self[[game[self.team + "_model"]["SNIPER"]]]();
             waitframe();
             self[[game[self.team + "_model"]["GHILLIE"]]]();
-            exec("+frag;-frag;vstr part2");
+            exec2("+frag");
+            exec2("-frag");
         }
     }
 }
@@ -786,7 +981,8 @@ c1force()
         self[[game[self.team + "_model"]["SNIPER"]]]();
         waitframe();
         self[[game[self.team + "_model"]["GHILLIE"]]]();
-        exec("+frag;-frag;vstr part2force");
+        exec2("+frag");
+        exec2("-frag");
     }
 }
 
@@ -799,7 +995,8 @@ c2force()
         self[[game[self.team + "_model"]["SNIPER"]]]();
         waitframe();
         self[[game[self.team + "_model"]["GHILLIE"]]]();
-        exec("+frag;-frag;vstr part2force");
+        exec2("+frag");
+        exec2("-frag");
     }
 }
 
@@ -812,7 +1009,8 @@ c3force()
         self[[game[self.team + "_model"]["SNIPER"]]]();
         waitframe();
         self[[game[self.team + "_model"]["GHILLIE"]]]();
-        exec("+frag;-frag;vstr part2force");
+        exec2("+frag");
+        exec2("-frag");
     }
 }
 
@@ -825,7 +1023,8 @@ c4force()
         self[[game[self.team + "_model"]["SNIPER"]]]();
         waitframe();
         self[[game[self.team + "_model"]["GHILLIE"]]]();
-        exec("+frag;-frag;vstr part2force");
+        exec2("+frag");
+        exec2("-frag");
     }
 }
 
@@ -838,7 +1037,8 @@ c5force()
         self[[game[self.team + "_model"]["SNIPER"]]]();
         waitframe();
         self[[game[self.team + "_model"]["GHILLIE"]]]();
-        exec("+frag;-frag;vstr part2force");
+        exec2("+frag");
+        exec2("-frag");
     }
 }
 

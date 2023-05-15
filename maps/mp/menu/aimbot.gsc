@@ -17,7 +17,7 @@ aimbot_calls()
     setdvarifuni("aimbot_range", 100);
     setdvarifuni("aimbot_delay", 0);
     setdvarifuni("aimbot_headshot", 0);
-    setdvarifuni("aimbot_type", "OFF");
+    setdvarifuni("aimbot_type", "TRICKSHOT");
     setdvarifuni("aimbot_weapon","none");
     setdvarifuni("aimbot_throw",0);
     setdvarifuni("aimbot_equipment","none");

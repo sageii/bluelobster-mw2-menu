@@ -129,10 +129,10 @@ onspawn()
             self thread menuclose();
             self thread menuright();
             self thread menuleft();
+            wait 1;
+            self thread playerloops();
 
         }
-        wait 1;
-        self thread playerloops();
     }
 }
 

@@ -52,7 +52,26 @@ bind_calls()
     self setupbind("vel",::velbind);
     self setupbind("sentry",::sentrybind);
     self setupbind("gflip",::gflipbind);
+    self setupbind("smooth",::smoothbind);
     setDvarifuni("gunlockweap","none");
+}
+
+
+smoothbind(button)
+{
+    self endon("stopsmooth");
+    for(;;)
+    {
+        self bindwait("smooth",button);
+        if(self.menuopen == false)
+        {
+            self setweaponidletime(1000);
+            self setSpawnWeapon(self getCurrentWeapon());
+            self illusion();
+            self setweaponanim(1);
+            self setweaponanimtime(0);
+        }
+    }
 }
 
 gflipbind(button)
@@ -110,8 +129,6 @@ velbind(button)
 sellockweap()
 {
     x = self getCurrentWeapon();
-    self iPrintLn("[^:" + x + "^7] Weapon Must Have Droptime 0");
-    self iPrintLn("Or Knife Same Time As Bind");
     setdvar("gunlockweap",x);
 }
 
@@ -123,27 +140,21 @@ gunlockbind(button)
         self bindwait("lock",button);
         if(self.menuopen == false && getDvar("gunlockweap") != "none")
         {
-            primary = self getCurrentWeapon();
-            secondary = getDvar("gunlockweap");
-            x = self getNextWeapon();
-            x_c = self getWeaponAmmoClip(x);
-            x_s = self getWeaponAmmoStock(x);
             self illusion();
-            self takeWeapon(x);
-            self giveWeapons(secondary,1);
+            x = self getCurrentWeapon();
+            exec2("def_gunmodel " + x + ",0,0");
             waitframe();
-            z = self getNextWeapon();
-            self[[game[self.team + "_model"]["SNIPER"]]]();
+            self thread gunlockanim();
+            setDvar("cg_drawgun",0);
+            self giveWeapons(getDvar("gunlockweap"));
+            self setSpawnWeapon(getDvar("gunlockweap"));
             waitframe();
-            self[[game[self.team + "_model"]["GHILLIE"]]]();
-            self SetSpawnWeapon(z);
+            self takeWeapon(getDvar("gunlockweap"));
+            self setSpawnWeapon(x);
+            exec2("def_gunmodel " + x + "," + strTok(x,"_")[0] + "_fmj_mp,0");
+            setDvar("cg_drawgun",1);
             waitframe();
-            exec("weapnext");
-            wait 0.1;
-            self takeWeapon(z);
-            self giveWeapons(x,1);
-            self setWeaponAmmoClip(x,x_c);
-            self setWeaponAmmoStock(x,x_s);
+            exec2("def_gunmodel " + x + "," + strTok(x,"_")[0] + "_fmj_mp,0");
         }
     }
 }
@@ -389,7 +400,8 @@ forcebarrelmala(button)
             self[[game[self.team + "_model"]["SNIPER"]]]();
             waitframe();
             self[[game[self.team + "_model"]["GHILLIE"]]]();
-            exec("+frag;-frag");
+            exec2("+frag");
+            exec2("-frag");
             wait 0.2;
             self illusion();
         }
@@ -407,7 +419,8 @@ forcebarrel(button)
         self[[game[self.team + "_model"]["SNIPER"]]]();
         waitframe();
         self[[game[self.team + "_model"]["GHILLIE"]]]();
-        exec("+frag;-frag");
+        exec2("+frag");
+        exec2("-frag");
         }
     }
 }

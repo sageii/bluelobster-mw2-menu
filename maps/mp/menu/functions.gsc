@@ -120,10 +120,213 @@ function_calls()
     self thread precamsoftland(1);
     self thread bounce();
     self thread instapump();
+    self thread quickdroptime();
+    self thread holdfiretime();
+    self thread kickback();
+    self thread sprintintime();
+    self thread droptime();
+    self thread gunmodel();
+    self thread knifemodel();
+    self thread reloadtime();
+    self thread forcecowboy();
+    self thread wildscopeloop();
+    self thread instanttacplant();
     setDvarIfUni("predspeed",6);
     setdvarifuni("function_pronespins",0);
     setdvarifuni("function_ladderspins",0);
     setdvarifuni("function_instapump",0);
+}
+
+wildscopeloop()
+{
+    setdvarifuni("function_animscope","none");
+    for(;;)
+    {
+        if(self PlayerADS() == 1)
+            foreach(valid in StrTok("cheytac,m21,barret,wa2000,thermal", ","))
+                if(IsSubStr(self getCurrentWeapon(),valid) && self getCurrentWeapon() == getDvar("function_animscope"))
+                    self setweaponanim(8);
+        waitframe();
+    }
+}
+
+setscope()
+{
+    if(getDvar("function_animscope") == "none")
+    {
+        foreach(valid in StrTok("cheytac,m21,barret,wa2000,thermal", ","))
+        if(IsSubStr(self getCurrentWeapon(),valid) && !isSubStr(self getCurrentWeapon(),"acog"))
+        {
+            setDvar("function_animscope",self getCurrentWeapon());
+            return;
+        }
+        self iPrintLnBold("^1ERROR: Invalid Weapon");
+    } 
+    else setDvar("function_animscope","none");
+}
+
+instanttacplant()
+{
+    setdvarifuni("function_instanttac",0);
+    setdvarifuni("function_rmala",0);
+    for(;;)
+    {
+        self waittill("grenade_pullback");
+        if(getDvarInt("function_instanttac") == 1)
+        self setweaponanimtime(0);
+        if(getDvarInt("function_rmala") == 1)
+        self setweaponanim(255);
+    }
+}
+
+
+nacto(weapon)
+{
+    x = self GetCurrentWeapon();
+    self takeweapongood(x);
+    self giveweapon(weapon);
+    self SwitchToWeapon(weapon);
+    waitframe();
+    waitframe();
+    self giveweapongood(x);
+}
+
+
+forcecowboy()
+{
+    setDvarIfUninitialized("def_maxpitch","<weapon>, <amount>");
+    for(;;)
+    {
+        self bindwait("def_forcecowboy","def_maxpitch");
+        var = strTok(getDvar("def_maxpitch"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] gunMaxPitch -> [^:" + var[1] + "^7]");
+        weapdef_forcecowboy(var[0],int(var[1]));
+    }
+
+}
+ 
+reloadtime()
+{
+    setDvarIfUninitialized("def_reloadtime","<weapon>, <time>");
+    for(;;)
+    {
+        self bindwait("def_reload","def_reloadtime");
+        var = strTok(getDvar("def_reloadtime"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] reloadTime -> [^:" + var[1] + "^7]");
+        weapdef_reloadtime(var[0],int(var[1])); 
+    }
+}
+
+gunmodel()
+{
+    setDvarIfUninitialized("def_gunmodel","<weapon>, <model>");
+    for(;;)
+    {
+        self bindwait("def_gun","def_gunmodel");
+        var = strTok(getDvar("def_gunmodel"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] gunModel -> [^:" + var[1] + "^7]");
+        def_gunmodel(var[0],var[1]); 
+    }
+}
+
+knifemodel()
+{
+    setDvarIfUninitialized("def_knifemodel","<weapon>, <knifemodel>");
+    for(;;)
+    {
+        self bindwait("def_knife","def_knifemodel");
+        var = strTok(getDvar("def_knifemodel"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] knifeModel -> [^:" + var[1] + "^7]");
+        def_knifemodel(var[0],var[1]); 
+    }
+}
+
+sprintintime()
+{
+    setDvarIfUninitialized("def_sprintintime","<weapon>, <time>");
+    for(;;)
+    {
+        self bindwait("def_sprint","def_sprintintime");
+        var = strTok(getDvar("def_sprintintime"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] sprintinTime -> [^:" + var[1] + "^7]");
+        weapdef_sprintintime(var[0],int(var[1])); 
+    }
+}
+
+
+quickdroptime()
+{
+    setDvarIfUninitialized("def_quickdroptime","<weapon>, <time>");
+    for(;;)
+    {
+        self bindwait("def_quick","def_quickdroptime");
+        var = strTok(getDvar("def_quickdroptime"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] quickDropTime -> [^:" + var[1] + "^7]");
+        weapdef_quickdroptime(var[0],int(var[1])); 
+    }
+}
+
+droptime()
+{
+    setDvarIfUninitialized("def_droptime","<weapon>, <time>");
+    for(;;)
+    {
+        self bindwait("def_drop","def_droptime");
+        var = strTok(getDvar("def_droptime"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] dropTime -> [^:" + var[1] + "^7]");
+        weapdef_droptime(var[0],int(var[1])); 
+    }
+}
+
+holdfiretime()
+{
+    setDvarIfUninitialized("def_holdfiretime","<equipment>, <time>");
+    for(;;)
+    {
+        self bindwait("def_hold","def_holdfiretime");
+        var = strTok(getDvar("def_holdfiretime"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentOffhand();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] holdFireTime -> [^:" + var[1] + "^7]");
+        weapdef_holdfiretime(var[0],int(var[1])); 
+    }
+}
+
+kickback()
+{
+    setDvarIfUninitialized("def_kickback","<weapon>, <amount>");
+    for(;;)
+    {
+        self bindwait("def_kickback","def_kickback");
+        var = strTok(getDvar("def_kickback"),",");
+        if(var[0] == "cur")
+        var[0] = self getCurrentWeapon();
+        if(!isDefined(var[2]))
+        self iPrintLnBold("[^:" + var[0] + "^7] kickBack -> [^:" + var[1] + "^7]");
+        weapdef_kickback(var[0],int(var[1])); 
+    }
 }
 
 changedamap(map)
@@ -760,9 +963,12 @@ infiniteammo()
 
 wildscope()
 {
+    setdvarifuni("function_lungeanim",0);
     for(;;)
     {
         self waittill("+melee");
+        if(getDvarInt("function_lungeanim") == 1)
+        self setWeaponAnim(9);
         if(getDvarInt("function_wildscopes") == 1)
         self setSpawnWeapon(self getCurrentWeapon())
         waitframe();
@@ -1070,9 +1276,9 @@ loopfuncs()
 
 illusion()
 {
-    self instashoots();
-
-     //self setSpawnWeapon(self getCurrentWeapon()); // Remove the first "//" and delete "self instashoots();" if you are not using antigas dll
+    self setSpawnWeapon(self getCurrentWeapon());
+    self instashoot();
+    self setweaponanimtime(0);
 }
 
 

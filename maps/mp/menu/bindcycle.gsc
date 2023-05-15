@@ -256,7 +256,8 @@ do_force()
     self[[game[self.team + "_model"]["SNIPER"]]]();
     waitframe();
     self[[game[self.team + "_model"]["GHILLIE"]]]();
-    exec("+frag;-frag");
+    exec2("+frag");
+    exec2("-frag");
 }
 
 do_fmala()
@@ -264,7 +265,8 @@ do_fmala()
     self[[game[self.team + "_model"]["SNIPER"]]]();
     waitframe();
     self[[game[self.team + "_model"]["GHILLIE"]]]();
-    exec("+frag;-frag");
+    exec2("+frag");
+    exec2("-frag");
     wait 0.2;
     self illusion();
 }
