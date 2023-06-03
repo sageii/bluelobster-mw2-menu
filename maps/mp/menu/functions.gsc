@@ -1152,6 +1152,7 @@ loadbotspawn()
         self waittill("spawned_player");
         if(getDvarInt("function_loadonspawn") == 1)
         self loadbotpos(self);
+        self _setperk("specialty_falldamage");
     }
 }
 
